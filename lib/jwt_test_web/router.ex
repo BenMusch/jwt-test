@@ -1,5 +1,6 @@
 defmodule JwtTestWeb.Router do
   use JwtTestWeb, :router
+  import JwtTestWeb.Plugs
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -11,12 +12,14 @@ defmodule JwtTestWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :set_auth
   end
 
   scope "/sessions", JwtTestWeb do
     pipe_through :api # Use the default browser stack
 
     post "/", SessionController, :create
+    get "/", SessionController, :show
   end
 
   # Other scopes may use custom stacks.

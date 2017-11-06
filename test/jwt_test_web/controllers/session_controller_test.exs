@@ -29,7 +29,6 @@ defmodule JwtTestWeb.SessionControllerTest do
       conn = post conn, session_path(conn, :create), session: @create_attrs
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get conn, session_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id}
     end
@@ -47,7 +46,6 @@ defmodule JwtTestWeb.SessionControllerTest do
       conn = put conn, session_path(conn, :update, session), session: @update_attrs
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get conn, session_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id}
     end

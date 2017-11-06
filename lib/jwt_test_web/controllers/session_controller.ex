@@ -18,8 +18,14 @@ defmodule JwtTestWeb.SessionController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    session = Auth.get_session!(id)
-    render(conn, "show.json", session: session)
+  def show(conn, _) do
+    if conn.assigns[:auth] do
+      conn
+      |> render("show.json", username: conn.assigns[:auth])
+    else
+      conn
+      |> put_status(401)
+      |> render("error.json", error: "You must be logged in. Try posting to /sessions")
+    end
   end
 end
